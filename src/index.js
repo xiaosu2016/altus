@@ -5,7 +5,7 @@ const {
   ipcMain,
   dialog,
   Tray,
-  shell,
+  shell
 } = require("electron");
 const path = require("path");
 const { mainMenu, trayContextMenu } = require("./util/menu");
@@ -15,6 +15,8 @@ const {
   trayNotifIcon,
   mainNotifIcon,
 } = require("./util/icons");
+
+
 const Store = require("electron-store");
 const AutoLaunch = require("auto-launch");
 const importSettings = require("./ipcHandlers/main/importSettings");
@@ -106,6 +108,14 @@ const createMainWindow = () => {
   mainWindow.loadFile(path.join(__dirname, "../public/index.html"));
 
   mainWindow.webContents.send("userDataPath", app.getPath("userData"));
+  mainWindow.webContents.on('did-stop-loading',function(){
+    mainWindow.webContents.executeJavaScript(`
+    
+      
+    `).then(res=>{
+      console.log(res);
+    })
+  })
 
   mainWindow.on("close", (e) => {
     if (app.closeToTray) {

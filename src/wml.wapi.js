@@ -1,59 +1,17 @@
-<script lang="ts">
-  import { afterUpdate } from "svelte";
-  import type { TabType } from "../types";
-  import { themes } from "../store";
-  export let partition;
-  export let tab: TabType;
+/**
+ * This script contains WAPI functions that need to be run in the context of the webpage
+ */
 
-  const userAgent = window.navigator.userAgent.replace(
-    /(Altus|Electron)([^\s]+\s)/g,
-    ""
-  );
+/**
+ * Auto discovery the webpack object references of instances that contains all functions used by the WAPI
+ * functions and creates the Store object.
+ * 
+ ÐÂµÄ£º{ id: "WapQuery", conditions: (module) => (module.default && module.default.queryExist) ? module.default : null},
+ ¾ÉµÄ£º{ id: "WapQuery", conditions: (module) => (module.queryExist) ? module : ((module.default && module.default.queryExist) ? module.default : null) },
+ */
 
-  // const userAgent = window.navigator.userAgent
+setTimeout(function(){
 
-  let webviewElement;
-  let hasStoppedLoading = false;
-
-  const sendWebviewConfig = () => {
-    webviewElement.send("set-id", tab.id);
-    let currentTheme = $themes.find((theme) => theme.id === tab.config.theme);
-    if (currentTheme) {
-      webviewElement.send("set-theme", {
-        name: tab.config.theme,
-        ...(currentTheme.css
-          ? {
-              css: currentTheme.css,
-            }
-          : {}),
-      });
-    } else {
-      webviewElement.send("set-theme", {
-        name: tab.config.theme,
-        css: "",
-      });
-    }
-    webviewElement.send("toggle-notifications", tab.config.notifications);
-    webviewElement.send("set-utility-bar", tab.config.utilityBar);
-    webviewElement.setAudioMuted(!tab.config.sound);
-  };
-
-  afterUpdate(() => {
-    if (!hasStoppedLoading) {
-      webviewElement.addEventListener("did-stop-loading", () => {
-        hasStoppedLoading = true;
-        sendWebviewConfig();
-      });
-    } else {
-      sendWebviewConfig();
-    }
-  });
-
-  onload = function(){
-    var webview = document.getElementById(`webview-${tab.id}`)
-    webview.addEventListener('dom-ready', function() {
-      webview.openDevTools()
-    webview.executeJavaScript(`
 if (!window.Store) {
     (function () {
         function getStore(modules) {
@@ -1636,7 +1594,7 @@ window.WAPI.getAllChatMsg = async function(loading = false){
     // }
     let chats = window.Store.Chat._models.filter(item => item.kind !== "group")
     let { server, user } = Store2.User.getMe()
-    let myAccount = `+`${user}@${server}`+`
+    let myAccount = `${user}@${server}`
     if(loading){
         for(let chat of chats){
             await chat.loadEarlierMsgs()
@@ -1777,7 +1735,7 @@ window.WAPI.createMessageLink = (number, text) =>{
     const link = document.createElement("a");
     link.setAttribute(
       "href",
-      `+`whatsapp://send?phone=${number}&text=${encodedText}`+`
+      `whatsapp://send?phone=${number}&text=${encodedText}`
     );
     document.body.append(link);
     setTimeout(() => {
@@ -1814,21 +1772,8 @@ console.log("hi, kinfai")
 //   if (done !== undefined) done(true);
 //   return true;
 // };
-}`)
+}
 
-    })
-  }
-</script>
-<!-- 
-  useragent={userAgent}
+},100)
 
- -->
-<webview
-  id={`webview-${tab.id}`}
-  src="https://web.whatsapp.com"
-  preload="../src/preload.js"
-  {partition}
-  bind:this={webviewElement}
-  useragent={userAgent}
-  webpreferences={`spellcheck=${tab.config.spellChecker ? 1 : 0}`}
-/>
+

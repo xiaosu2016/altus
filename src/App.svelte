@@ -65,7 +65,7 @@
 </script>
 
 <main>
-  {#if showTitlebar}
+  {#if showTitlebar }
     <CustomTitlebar />
   {/if}
   <div class="container">

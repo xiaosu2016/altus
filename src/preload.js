@@ -6,15 +6,22 @@ const enableUtilityBar = require("./util/webview/utilityBar/enableUtilityBar");
 const disableUtilityBar = require("./util/webview/utilityBar/disableUtilityBar");
 const Store = require("electron-store");
 const elementSelectors = require("./util/webview/utilityBar/elementSelectors");
-
+// const Create_WAPI = require('./wml.wapi') 
 let quickRepliesStore = new Store({
   name: "quick_replies",
   defaults: {},
 });
 
 ipcRenderer.send("flush-session-data");
-
+window.aa = '123455'
 window.onload = () => {
+// console.log(window);
+
+window.WAPI = {
+  lastRead: {},
+  aaa:"2324234"
+};
+
   const title_element = document.querySelector(".landing-title");
   if (title_element && title_element.innerHTML.includes("Google Chrome")) {
     window.location.reload();
@@ -203,6 +210,11 @@ window.onload = () => {
     subtree: true,
     childList: true,
   });
+  document.querySelector("#app").addEventListener('click',function(){
+    alert()
+  })
+
+  window.aa = 111
 };
 
 const appendTheme = (css) => {
@@ -307,3 +319,4 @@ ipcRenderer.on("toggle-notifications", (_, setting) => {
 ipcRenderer.on("format-text", (e, wrapper) => {
   formatSelectedText(wrapper);
 });
+console.log('1111')
