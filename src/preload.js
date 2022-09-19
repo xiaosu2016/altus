@@ -1,4 +1,4 @@
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, webContents } = require("electron");
 const dispatchMouseEvents = require("./util/webview/dispatchMouseEvents");
 const addChatIDs = require("./util/webview/addChatIDs");
 const formatSelectedText = require("./util/webview/formatSelectedText");
@@ -15,12 +15,8 @@ let quickRepliesStore = new Store({
 ipcRenderer.send("flush-session-data");
 window.aa = '123455'
 window.onload = () => {
-// console.log(window);
+  // console.log(window);
 
-window.WAPI = {
-  lastRead: {},
-  aaa:"2324234"
-};
 
   const title_element = document.querySelector(".landing-title");
   if (title_element && title_element.innerHTML.includes("Google Chrome")) {
@@ -210,8 +206,8 @@ window.WAPI = {
     subtree: true,
     childList: true,
   });
-  document.querySelector("#app").addEventListener('click',function(){
-    alert()
+  document.querySelector("#app").addEventListener('click', function () {
+    // alert()
   })
 
   window.aa = 111
@@ -319,4 +315,8 @@ ipcRenderer.on("toggle-notifications", (_, setting) => {
 ipcRenderer.on("format-text", (e, wrapper) => {
   formatSelectedText(wrapper);
 });
-console.log('1111')
+console.log(webContents)
+
+// webContents.addEventListener('dom-ready',() => {
+//   alert()
+// })

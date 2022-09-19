@@ -6,6 +6,7 @@
 <div class="tab-content">
   {#if $tabs.length > 0}
     {#each $tabs as tab}
+      {tab.id}
       <div class="content" class:active={tab.active}>
         <WebView partition={`persist:${tab.id}`} {tab} />
       </div>

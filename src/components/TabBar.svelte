@@ -123,7 +123,7 @@
   });
 
   ipcRenderer.on("open-tab-devtools", () => {
-    (document as any).querySelector(".content.active webview").openDevTools();
+    // (document as any).querySelector(".content.active webview").openDevTools();
   });
 
   ipcRenderer.on("close-tab", (e, id) => {

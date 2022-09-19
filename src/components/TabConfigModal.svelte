@@ -64,9 +64,9 @@
   };
 
   const openTabDevTools = () => {
-    (document as any)
-      .getElementById(`webview-${tabSettings.id}`)
-      .openDevTools();
+    // (document as any)
+    //   .getElementById(`webview-${tabSettings.id}`)
+    //   .openDevTools();
   };
 
   const clearTabCache = () => {
